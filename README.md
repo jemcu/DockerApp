@@ -64,6 +64,25 @@ docker compose down
 
 Los datos de MySQL se conservan en el volumen `datos-bd` al detener los servicios. Para eliminar también la base persistida, ejecuta `docker compose down -v`; esta acción borra permanentemente esos datos.
 
+### Comprobar que el volumen conserva los datos
+
+Compose crea y monta automáticamente el volumen nombrado `datos-bd` en `/var/lib/mysql` (su nombre completo puede llevar el prefijo del proyecto, por ejemplo `actividad2_docker_datos-bd`). Comprueba el montaje con:
+
+```powershell
+docker volume ls
+docker inspect actividad2_docker-bd-1
+```
+
+Para probar que los datos sobreviven a la eliminación del contenedor de MySQL, elimina y recrea solo ese contenedor:
+
+```powershell
+docker compose rm -sf bd
+docker compose up -d bd
+docker compose ps
+```
+
+Al recrear `bd`, Compose vuelve a montar el mismo volumen; no ejecutes `docker compose down -v`, porque ese comando sí elimina el volumen.
+
 ## Estructura
 
 ```text
